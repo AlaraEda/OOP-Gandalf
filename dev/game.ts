@@ -2,7 +2,7 @@ class Game {
     //Singleton
     private static instance: Game
 
-    private breakfast:Breakfast;
+    public breakfast:Breakfast;
     private ork:Ork;
     private ork2: Ork;
     public gandalf: Gandalf[] = []         //We willen 50 copies die rondlopen
@@ -31,8 +31,11 @@ class Game {
 
         //Creeer 50 gandalf's
         for(let i = 0; i<50; i++){
-            let gandalf = new Gandalf()
+            let gandalf = new Gandalf(this)
             this.gameobjects.push(gandalf)
+
+            //Subscribe breakfast to all Gandalfs.
+            this.breakfast.subscribe(gandalf)
         }
 
         requestAnimationFrame(() => this.gameLoop());

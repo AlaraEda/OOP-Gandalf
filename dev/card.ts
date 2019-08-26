@@ -1,3 +1,4 @@
+//Het kaartje onder aan het scherm
 class Card  {
         
     public div: HTMLElement;

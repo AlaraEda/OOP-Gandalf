@@ -27,5 +27,8 @@ class Leaving implements Behaviour {
             console.log("het karakter is uit beeld");
         }
         this.gandalf.setSpeed(xdistance, ydistance);
+
+        //Remove Gandalf from Breakfast subscribption
+        this.gandalf.game.breakfast.unSubscribe(this.gandalf)
     }
 }

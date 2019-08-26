@@ -2,6 +2,8 @@
 class Breakfast {
     constructor() {
         this.counter = 0;
+        this.clicked = false;
+        this.observers = [];
         this.bar = document.getElementsByTagName("bar")[0];
         this.button = document.getElementsByTagName("foodbutton")[0];
         this.button.style.cursor = "auto";
@@ -22,6 +24,20 @@ class Breakfast {
         this.button.removeEventListener("click", this.callback);
         this.button.classList.remove("blinking");
         this.button.style.cursor = "auto";
+        this.clicked === true;
+    }
+    subscribe(observer) {
+        this.observers.push(observer);
+    }
+    unSubscribe(observer) {
+        let index = this.observers.indexOf(observer);
+        this.observers.splice(index, 1);
+    }
+    notifyObservers() {
+        for (let observer of this.observers) {
+            observer.notify();
+            console.log("Notify all Gandalfs");
+        }
     }
 }
 class Card {
@@ -46,8 +62,9 @@ class Game {
         this.ork2 = new Ork();
         this.gameobjects.push(this.ork, this.ork2);
         for (let i = 0; i < 50; i++) {
-            let gandalf = new Gandalf();
+            let gandalf = new Gandalf(this);
             this.gameobjects.push(gandalf);
+            this.breakfast.subscribe(gandalf);
         }
         requestAnimationFrame(() => this.gameLoop());
     }
@@ -104,8 +121,9 @@ class GameObject {
 class Gandalf extends GameObject {
     set behaviour(b) { this._behaviour = b; }
     get behaviour() { return this._behaviour; }
-    constructor() {
+    constructor(game) {
         super("gandalf");
+        this.game = game;
         this.behaviour = new Sleeping(this);
     }
     update() {
@@ -115,6 +133,10 @@ class Gandalf extends GameObject {
     playSound() {
         var audio = new Audio('GottaGo.mp3');
         audio.play();
+    }
+    notify() {
+        console.log("Gandalf is the class that observes");
+        this.behaviour = new Leaving(this);
     }
 }
 class Ork extends GameObject {
@@ -151,7 +173,6 @@ class Hungry {
             this.gandalf.setTarget();
         this.gandalf.setSpeed(xdistance, ydistance);
         console.log("Loop mijn hongerige Gandalf! LOOP!!!");
-        this.gandalf.behaviour = new Leaving(this.gandalf);
     }
 }
 class Leaving {
@@ -174,10 +195,12 @@ class Leaving {
             console.log("het karakter is uit beeld");
         }
         this.gandalf.setSpeed(xdistance, ydistance);
+        this.gandalf.game.breakfast.unSubscribe(this.gandalf);
     }
 }
 class Sleeping {
     constructor(gandalf) {
+        this.clicked = false;
         this.gandalf = gandalf;
         this.gandalf.div.style.backgroundImage = "url(images/" + this.gandalf.tag + "_sleep.png)";
         this.gandalf.div.style.cursor = "pointer";
@@ -192,6 +215,9 @@ class Sleeping {
         this.gandalf.div.style.cursor = "auto";
         this.gandalf.div.removeEventListener("click", this.callback);
         this.gandalf.div.removeEventListener("touchstart", this.callback);
+        if (this.clicked === true && this.gandalf.game.breakfast.clicked === true) {
+            this.gandalf.game.breakfast.notifyObservers();
+        }
         this.gandalf.behaviour = new Hungry(this.gandalf);
     }
 }

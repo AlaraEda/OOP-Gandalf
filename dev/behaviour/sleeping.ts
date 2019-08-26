@@ -2,6 +2,7 @@ class Sleeping implements Behaviour {
 
     private callback:EventListener;
     private gandalf: Gandalf
+    public clicked: boolean = false;
 
     constructor(gandalf : Gandalf){
         this.gandalf = gandalf
@@ -29,6 +30,12 @@ class Sleeping implements Behaviour {
         this.gandalf.div.style.cursor =  "auto";
         this.gandalf.div.removeEventListener("click", this.callback);
         this.gandalf.div.removeEventListener("touchstart",this.callback);
+
+        //Wanneer ik klik vluchten alle gandalfs weg maakt niet uit of ze slapen of niet.
+        //Notify all the Gandalfs die gesubscribed staan op Breakfast
+        if(this.clicked === true && this.gandalf.game.breakfast.clicked === true){
+            this.gandalf.game.breakfast.notifyObservers()
+        }
 
         //Verandert behaviour naar hungry
         this.gandalf.behaviour = new Hungry(this.gandalf) 

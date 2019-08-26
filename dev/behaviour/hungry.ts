@@ -2,6 +2,7 @@ class Hungry implements Behaviour {
     
     private gandalf: Gandalf    //Verwijzing naar gandalf.ts
     
+    
     constructor(gandalf: Gandalf){
         this.gandalf = gandalf
 
@@ -23,8 +24,5 @@ class Hungry implements Behaviour {
         if(xdistance < 4 && ydistance < 4) this.gandalf.setTarget();
         this.gandalf.setSpeed(xdistance, ydistance);
         console.log("Loop mijn hongerige Gandalf! LOOP!!!")
-
-        //If ... Gandalf heeft hamburger
-        this.gandalf.behaviour = new Leaving(this.gandalf) 
     }
 }
