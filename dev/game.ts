@@ -1,13 +1,25 @@
 class Game {
-    
+    //Singleton
+    private static instance: Game
+
     private breakfast:Breakfast;
     private gandalf1:Gandalf;
     private gandalf2:Gandalf;
     private ork1:Ork;
     private ork2:Ork;
 
+    //Vanwege singleton staat dit leeg.
+    //Omdat de constructor private is kan je geen new game() doen.
     constructor() { 
+        console.log("This game uses singleton")
+      
+    }
 
+    public static getInstance(){
+        return this.instance || (this.instance = new Game())
+    }
+    
+    public initGame() {
         //Allles wat zichtbaar is in het spel
         this.breakfast = new Breakfast();
         this.gandalf1 = new Gandalf();
@@ -17,7 +29,7 @@ class Game {
 
         requestAnimationFrame(() => this.gameLoop());
     }
-    
+
     private gameLoop(){
 
         //Update alle onderdelen
@@ -39,5 +51,10 @@ class Game {
             this.array.splice(i, 1);
         }
     }
-    */
+    */    
 } 
+
+window.addEventListener("load", () => {
+    let gameOne = Game.getInstance()    //Aangezien je niet met new Game() de Class kan oproepen roep je het zo op.
+    gameOne.initGame()
+})

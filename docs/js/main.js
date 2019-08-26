@@ -33,6 +33,12 @@ class Card {
 }
 class Game {
     constructor() {
+        console.log("This game uses singleton");
+    }
+    static getInstance() {
+        return this.instance || (this.instance = new Game());
+    }
+    initGame() {
         this.breakfast = new Breakfast();
         this.gandalf1 = new Gandalf();
         this.gandalf2 = new Gandalf();
@@ -49,6 +55,10 @@ class Game {
         requestAnimationFrame(() => this.gameLoop());
     }
 }
+window.addEventListener("load", () => {
+    let gameOne = Game.getInstance();
+    gameOne.initGame();
+});
 class GameObject {
     constructor(tag) {
         this.xspeed = 0;
@@ -147,9 +157,6 @@ class Gandalf extends GameObject {
     sleeping() {
     }
 }
-window.addEventListener("load", function () {
-    new Game();
-});
 class Ork extends GameObject {
     constructor() {
         super("ork");
