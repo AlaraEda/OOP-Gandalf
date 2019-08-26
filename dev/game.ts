@@ -3,29 +3,37 @@ class Game {
     private static instance: Game
 
     private breakfast:Breakfast;
-    private gandalf1:Gandalf;
-    private gandalf2:Gandalf;
-    private ork1:Ork;
-    private ork2:Ork;
+    private ork:Ork;
+    private ork2: Ork;
+    public gandalf: Gandalf[] = []         //We willen 50 copies die rondlopen
+
+    private gameobjects: GameObject[] = []  //Hier zitten alle objecten in
 
     //Vanwege singleton staat dit leeg.
     //Omdat de constructor private is kan je geen new game() doen.
     constructor() { 
         console.log("This game uses singleton")
-      
     }
 
     public static getInstance(){
         return this.instance || (this.instance = new Game())
     }
     
+    //Alles wat zichtbaar is in het spel
     public initGame() {
-        //Allles wat zichtbaar is in het spel
+        
         this.breakfast = new Breakfast();
-        this.gandalf1 = new Gandalf();
-        this.gandalf2 = new Gandalf();
-        this.ork1 = new Ork();
-        this.ork2 = new Ork();
+
+        //Creeer 2 ork's
+        this.ork = new Ork()
+        this.ork2 = new Ork()
+        this.gameobjects.push(this.ork, this.ork2)
+
+        //Creeer 50 gandalf's
+        for(let i = 0; i<50; i++){
+            let gandalf = new Gandalf()
+            this.gameobjects.push(gandalf)
+        }
 
         requestAnimationFrame(() => this.gameLoop());
     }
@@ -34,11 +42,13 @@ class Game {
 
         //Update alle onderdelen
         this.breakfast.update();
-        this.gandalf1.update();
-        this.gandalf2.update();
-        this.ork1.update();
-        this.ork2.update();
 
+        //Update alle objecten (Gandalf & de Ork) hier met polymorfisme
+        for (let o of this.gameobjects){
+            //Update alle Gandalfs & orks
+            o.update()
+        }
+        
         requestAnimationFrame(() => this.gameLoop());
     }
 

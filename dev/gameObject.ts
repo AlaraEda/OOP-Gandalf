@@ -49,4 +49,8 @@ class GameObject{
         this.xspeed *= this.speedmultiplier;
         this.yspeed *= this.speedmultiplier;
     }
+
+    update(){
+        
+    }
 }
