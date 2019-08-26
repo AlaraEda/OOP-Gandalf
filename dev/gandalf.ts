@@ -1,36 +1,11 @@
-class Gandalf {
-
-    public xspeed:number = 0;
-    public yspeed:number = 0;
-
-    public speedmultiplier:number = 1;
-    public facing:number = 1;
-
-    public div: HTMLElement;
-    public x:number = 0;
-    public y:number = 0;
-
-    public width:number;
-    public height:number;
-    
-    private xTarget:number;
-    private yTarget:number;
+class Gandalf extends GameObject{
 
     private callback:EventListener;
-    private tag:string;
+
         
     constructor() {
-        this.width = 67;
-        this.height = 119;
-
-        this.x = Math.random() * (window.innerWidth - 67);
-        this.y = Math.random() * (window.innerHeight - 110);
-        this.speedmultiplier = Math.random() + 1;
-
-        this.tag = "gandalf";
-        this.div = document.createElement(this.tag);
-        document.body.appendChild(this.div);
-        this.div.style.backgroundImage = "url(images/"+this.tag+"_hungry.png)";
+        super("gandalf")
+        //this.tag = "gandalf";
 
         // we slaan de click handler op in een variabele zodat we die makkelijk een listener kunnen toevoegen en verwijderen als het nodig is
         this.callback = (e:Event) => this.onClick(e);
@@ -115,23 +90,6 @@ class Gandalf {
     //
     public sleeping(){
         //
-    }
-
-    // een random doel om naartoe te lopen
-    private setTarget(){
-        this.xTarget = Math.random() * (window.innerWidth-80);
-        this.yTarget = Math.random() * (window.innerHeight-120);
-    }
-
-
-    // deze functie rekent de loopsnelheid uit
-    private setSpeed(xdist:number, ydist:number):void {
-        let distance:number = Math.sqrt(xdist * xdist + ydist * ydist);
-        this.xspeed = xdist/distance;
-        this.yspeed = ydist/distance;
-
-        this.xspeed *= this.speedmultiplier;
-        this.yspeed *= this.speedmultiplier;
     }
 
 }

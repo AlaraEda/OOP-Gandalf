@@ -49,23 +49,39 @@ class Game {
         requestAnimationFrame(() => this.gameLoop());
     }
 }
-class Gandalf {
-    constructor() {
+class GameObject {
+    constructor(tag) {
         this.xspeed = 0;
         this.yspeed = 0;
         this.speedmultiplier = 1;
         this.facing = 1;
         this.x = 0;
         this.y = 0;
+        this.tag = tag;
         this.width = 67;
         this.height = 119;
         this.x = Math.random() * (window.innerWidth - 67);
         this.y = Math.random() * (window.innerHeight - 110);
         this.speedmultiplier = Math.random() + 1;
-        this.tag = "gandalf";
         this.div = document.createElement(this.tag);
         document.body.appendChild(this.div);
         this.div.style.backgroundImage = "url(images/" + this.tag + "_hungry.png)";
+    }
+    setTarget() {
+        this.xTarget = Math.random() * (window.innerWidth - 80);
+        this.yTarget = Math.random() * (window.innerHeight - 120);
+    }
+    setSpeed(xdist, ydist) {
+        let distance = Math.sqrt(xdist * xdist + ydist * ydist);
+        this.xspeed = xdist / distance;
+        this.yspeed = ydist / distance;
+        this.xspeed *= this.speedmultiplier;
+        this.yspeed *= this.speedmultiplier;
+    }
+}
+class Gandalf extends GameObject {
+    constructor() {
+        super("gandalf");
         this.callback = (e) => this.onClick(e);
         let action = "sleeping";
         switch (action) {
@@ -130,38 +146,13 @@ class Gandalf {
     }
     sleeping() {
     }
-    setTarget() {
-        this.xTarget = Math.random() * (window.innerWidth - 80);
-        this.yTarget = Math.random() * (window.innerHeight - 120);
-    }
-    setSpeed(xdist, ydist) {
-        let distance = Math.sqrt(xdist * xdist + ydist * ydist);
-        this.xspeed = xdist / distance;
-        this.yspeed = ydist / distance;
-        this.xspeed *= this.speedmultiplier;
-        this.yspeed *= this.speedmultiplier;
-    }
 }
 window.addEventListener("load", function () {
     new Game();
 });
-class Ork {
+class Ork extends GameObject {
     constructor() {
-        this.xspeed = 0;
-        this.yspeed = 0;
-        this.speedmultiplier = 1;
-        this.facing = 1;
-        this.x = 0;
-        this.y = 0;
-        this.tag = "ork";
-        this.width = 67;
-        this.height = 119;
-        this.x = Math.random() * (window.innerWidth - 67);
-        this.y = Math.random() * (window.innerHeight - 110);
-        this.speedmultiplier = Math.random() + 1;
-        this.div = document.createElement(this.tag);
-        document.body.appendChild(this.div);
-        this.div.style.backgroundImage = "url(images/" + this.tag + "_hungry.png)";
+        super("ork");
         this.div.style.cursor = "auto";
         this.setTarget();
     }
@@ -175,17 +166,6 @@ class Ork {
         this.setSpeed(xdistance, ydistance);
         this.facing = (this.xspeed > 0) ? -1 : 1;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.facing + ",1)";
-    }
-    setTarget() {
-        this.xTarget = Math.random() * (window.innerWidth - 80);
-        this.yTarget = Math.random() * (window.innerHeight - 120);
-    }
-    setSpeed(xdist, ydist) {
-        let distance = Math.sqrt(xdist * xdist + ydist * ydist);
-        this.xspeed = xdist / distance;
-        this.yspeed = ydist / distance;
-        this.xspeed *= this.speedmultiplier;
-        this.yspeed *= this.speedmultiplier;
     }
 }
 //# sourceMappingURL=main.js.map
