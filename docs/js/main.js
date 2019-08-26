@@ -93,74 +93,24 @@ class GameObject {
         this.yspeed *= this.speedmultiplier;
     }
     update() {
-    }
-}
-class Gandalf extends GameObject {
-    constructor() {
-        super("gandalf");
-        this.callback = (e) => this.onClick(e);
-        let action = "sleeping";
-        switch (action) {
-            case "hungry":
-                this.div.style.backgroundImage = "url(images/" + this.tag + "_hungry.png)";
-                this.div.style.cursor = "auto";
-                this.setTarget();
-                break;
-            case "leaving":
-                this.div.style.backgroundImage = "url(images/" + this.tag + "_leaving.png)";
-                this.div.style.cursor = "auto";
-                this.xTarget = Math.random() * window.innerWidth;
-                this.yTarget = window.innerHeight + 300;
-                this.speedmultiplier += 1;
-                break;
-            case "sleeping":
-                this.div.style.backgroundImage = "url(images/" + this.tag + "_sleep.png)";
-                this.div.style.cursor = "pointer";
-                this.div.addEventListener("click", this.callback);
-                break;
-        }
-    }
-    update() {
-        let action = "sleeping";
-        switch (action) {
-            case "hungry":
-                this.hungry();
-                break;
-            case "leaving":
-                this.leaving();
-                break;
-            case "sleeping":
-                this.sleeping();
-                break;
-        }
         this.facing = (this.xspeed > 0) ? -1 : 1;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.facing + ",1)";
     }
-    onClick(e) {
-        console.log("je klikt op gandalf. de listener wordt nu verwijderd.");
-        this.div.style.cursor = "auto";
-        this.div.removeEventListener("click", this.callback);
+    draw() {
+        this.facing = (this.xspeed > 0) ? -1 : 1;
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.facing + ",1)";
     }
-    hungry() {
-        this.x += this.xspeed;
-        this.y += this.yspeed;
-        let xdistance = this.xTarget - this.x;
-        let ydistance = this.yTarget - this.y;
-        if (xdistance < 4 && ydistance < 4)
-            this.setTarget();
-        this.setSpeed(xdistance, ydistance);
+}
+class Gandalf extends GameObject {
+    set behaviour(b) { this._behaviour = b; }
+    get behaviour() { return this._behaviour; }
+    constructor() {
+        super("gandalf");
+        this.behaviour = new Sleeping(this);
     }
-    leaving() {
-        this.x += this.xspeed;
-        this.y += this.yspeed;
-        let xdistance = this.xTarget - this.x;
-        let ydistance = this.yTarget - this.y;
-        if (xdistance < 4 && ydistance < 4) {
-            console.log("het karakter is uit beeld");
-        }
-        this.setSpeed(xdistance, ydistance);
-    }
-    sleeping() {
+    update() {
+        this.behaviour.update();
+        this.draw();
     }
 }
 class Ork extends GameObject {
@@ -177,8 +127,66 @@ class Ork extends GameObject {
         if (xdistance < 4 && ydistance < 4)
             this.setTarget();
         this.setSpeed(xdistance, ydistance);
-        this.facing = (this.xspeed > 0) ? -1 : 1;
-        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.facing + ",1)";
+        this.draw();
+    }
+}
+class Hungry {
+    constructor(gandalf) {
+        this.gandalf = gandalf;
+        console.log("Gandalf is hungry as hell!");
+        this.gandalf.div.style.backgroundImage = "url(images/" + this.gandalf.tag + "_hungry.png)";
+        this.gandalf.div.style.cursor = "auto";
+        this.gandalf.setTarget();
+    }
+    update() {
+        this.gandalf.x += this.gandalf.xspeed;
+        this.gandalf.y += this.gandalf.yspeed;
+        let xdistance = this.gandalf.xTarget - this.gandalf.x;
+        let ydistance = this.gandalf.yTarget - this.gandalf.y;
+        if (xdistance < 4 && ydistance < 4)
+            this.gandalf.setTarget();
+        this.gandalf.setSpeed(xdistance, ydistance);
+        console.log("Loop mijn hongerige Gandalf! LOOP!!!");
+    }
+}
+class Leaving {
+    constructor(gandalf) {
+        this.gandalf = gandalf;
+        this.gandalf.div.style.backgroundImage = "url(images/" + this.gandalf.tag + "_leaving.png)";
+        this.gandalf.div.style.cursor = "auto";
+        this.gandalf.xTarget = Math.random() * window.innerWidth;
+        this.gandalf.yTarget = window.innerHeight + 300;
+        this.gandalf.speedmultiplier += 1;
+    }
+    update() {
+        console.log("Deze Gandolf zit vol en verlaat de game");
+        this.gandalf.x += this.gandalf.xspeed;
+        this.gandalf.y += this.gandalf.yspeed;
+        let xdistance = this.gandalf.xTarget - this.gandalf.x;
+        let ydistance = this.gandalf.yTarget - this.gandalf.y;
+        if (xdistance < 4 && ydistance < 4) {
+            console.log("het karakter is uit beeld");
+        }
+        this.gandalf.setSpeed(xdistance, ydistance);
+    }
+}
+class Sleeping {
+    constructor(gandalf) {
+        this.gandalf = gandalf;
+        this.gandalf.div.style.backgroundImage = "url(images/" + this.gandalf.tag + "_sleep.png)";
+        this.gandalf.div.style.cursor = "pointer";
+        this.callback = (e) => this.onClick(e);
+        this.gandalf.div.addEventListener("click", this.callback);
+        this.gandalf.div.addEventListener("touchstart", this.callback);
+    }
+    update() {
+    }
+    onClick(e) {
+        console.log("Je klikt op gandalf. De listener wordt nu verwijderd.");
+        this.gandalf.div.style.cursor = "auto";
+        this.gandalf.div.removeEventListener("click", this.callback);
+        this.gandalf.div.removeEventListener("touchstart", this.callback);
+        this.gandalf.behaviour = new Hungry(this.gandalf);
     }
 }
 //# sourceMappingURL=main.js.map

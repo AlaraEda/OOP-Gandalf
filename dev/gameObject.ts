@@ -12,11 +12,11 @@ class GameObject{
     public width:number;
     public height:number;
     
-    protected xTarget:number;
-    protected yTarget:number;
+    public xTarget:number;
+    public yTarget:number;
 
  
-    protected tag:string;
+    public tag:string;
 
     constructor(tag: string){
         this.tag = tag
@@ -35,13 +35,14 @@ class GameObject{
     }
 
     // een random plek in het scherm
-    protected setTarget(){
+    public setTarget(){
         this.xTarget = Math.random() * (window.innerWidth-80);
         this.yTarget = Math.random() * (window.innerHeight-120);
+        
     }
 
     // snelheid uitrekenen
-    protected setSpeed(xdist:number, ydist:number):void {
+    public setSpeed(xdist:number, ydist:number):void {
         let distance:number = Math.sqrt(xdist * xdist + ydist * ydist);
         this.xspeed = xdist/distance;
         this.yspeed = ydist/distance;
@@ -51,6 +52,14 @@ class GameObject{
     }
 
     update(){
-        
+         // in scherm tekenen
+         this.facing = (this.xspeed > 0) ? -1 : 1;
+         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px) scale("+this.facing+",1)";
+    }
+
+    protected draw(): void {
+        //Teken charakters in scherm
+        this.facing = (this.xspeed > 0) ? -1 : 1;
+        this.div.style.transform = "translate("+this.x+"px, "+this.y+"px) scale("+this.facing+",1)";
     }
 }

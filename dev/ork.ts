@@ -22,7 +22,7 @@ class Ork extends GameObject {
 
         this.setSpeed(xdistance, ydistance);
 
-        this.facing = (this.xspeed > 0) ? -1 : 1;
-        this.div.style.transform = "translate("+this.x+"px, "+this.y+"px) scale("+this.facing+",1)";
+        //Teken uit hoe de Ork aan het lopen is
+        this.draw()
     }
 }
