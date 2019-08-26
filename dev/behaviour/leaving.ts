@@ -11,6 +11,9 @@ class Leaving implements Behaviour {
         this.gandalf.xTarget = Math.random() * window.innerWidth;
         this.gandalf.yTarget = window.innerHeight + 300;
         this.gandalf.speedmultiplier += 1;
+
+        //Start-SoundEffect
+        this.gandalf.playSound()
     }
 
     //De leaving update laat Gandalf uit beeld lopen

@@ -14,30 +14,6 @@ class Gandalf extends GameObject{
 
         //Standaard --> Gandalf-Slaapt
         this.behaviour = new Sleeping(this)
-        // we slaan de click handler op in een variabele zodat we die makkelijk een listener kunnen toevoegen en verwijderen als het nodig is
-        //this.callback = (e:Event) => this.onClick(e);
-
-        // // constructor settings afhankelijk van de action
-        // let action = "sleeping";    //Dit is een behavior
-        // switch(action){
-        // case "hungry" :             //Dit is een behavior
-        //     this.div.style.backgroundImage = "url(images/"+this.tag+"_hungry.png)";
-        //     this.div.style.cursor =  "auto";
-        //     this.setTarget();
-        //     break;
-        // case "leaving" :
-        //     this.div.style.backgroundImage = "url(images/"+this.tag+"_leaving.png)";
-        //     this.div.style.cursor =  "auto";
-        //     this.xTarget = Math.random() * window.innerWidth;
-        //     this.yTarget = window.innerHeight + 300;
-        //     this.speedmultiplier += 1;
-        //     break;
-        // case "sleeping" :
-        //     this.div.style.backgroundImage = "url(images/"+this.tag+"_sleep.png)";
-        //     this.div.style.cursor =  "pointer";
-        //     this.div.addEventListener("click", this.callback);
-        //     break;
-        // }
     }
 
     //Update afhankelijk van de action
@@ -46,20 +22,12 @@ class Gandalf extends GameObject{
         this.behaviour.update()
 
         //Teken hoe Gandalf loopt.
-        this.draw()
+        this.draw()        
+    }
 
-        // let action = "sleeping";
-        // switch(action){
-        // case "hungry" :
-        //     this.hungry();
-        //     break;
-        // case "leaving" :
-        //     this.leaving();
-        //     break;
-        // case "sleeping" :
-        //     this.sleeping();
-        //     break;
-        // }
-        
+    //Sound Effect
+    public playSound() {
+        var audio = new Audio('GottaGo.mp3')
+        audio.play()
     }
 }

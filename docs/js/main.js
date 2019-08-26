@@ -112,6 +112,10 @@ class Gandalf extends GameObject {
         this.behaviour.update();
         this.draw();
     }
+    playSound() {
+        var audio = new Audio('GottaGo.mp3');
+        audio.play();
+    }
 }
 class Ork extends GameObject {
     constructor() {
@@ -147,6 +151,7 @@ class Hungry {
             this.gandalf.setTarget();
         this.gandalf.setSpeed(xdistance, ydistance);
         console.log("Loop mijn hongerige Gandalf! LOOP!!!");
+        this.gandalf.behaviour = new Leaving(this.gandalf);
     }
 }
 class Leaving {
@@ -157,6 +162,7 @@ class Leaving {
         this.gandalf.xTarget = Math.random() * window.innerWidth;
         this.gandalf.yTarget = window.innerHeight + 300;
         this.gandalf.speedmultiplier += 1;
+        this.gandalf.playSound();
     }
     update() {
         console.log("Deze Gandolf zit vol en verlaat de game");

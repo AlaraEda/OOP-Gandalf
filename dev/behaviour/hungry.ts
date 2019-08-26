@@ -25,6 +25,6 @@ class Hungry implements Behaviour {
         console.log("Loop mijn hongerige Gandalf! LOOP!!!")
 
         //If ... Gandalf heeft hamburger
-        //this.gandalf.behaviour = new Leaving(this.gandalf) 
+        this.gandalf.behaviour = new Leaving(this.gandalf) 
     }
 }
